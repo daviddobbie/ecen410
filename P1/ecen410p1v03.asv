@@ -40,20 +40,12 @@ uplink_pow_axis =db2pow(SNR_axis_dB) * n_sigma;
 
 power_cap_results_no_dist = no_dist_MIMO(uplink_pow_axis, K_users, ...
     n_sigma, BS_ant, sigma_sfdB, pathloss_m, R);
-sprintf('No distribution simulation done')
 
-power_cap_results_dist_no_intercell_one_third = dist_MIMO_no_intercell(uplink_pow_axis, K_users, ...
-    n_sigma, BS_ant, sigma_sfdB, pathloss_m, R, 1/3);
-sprintf('R * 1/3 distribution simulation done')
-
-power_cap_results_dist_no_intercell_mid = dist_MIMO_no_intercell(uplink_pow_axis, K_users, ...
+power_cap_results_dist_no_intercell = dist_MIMO_no_intercell(uplink_pow_axis, K_users, ...
     n_sigma, BS_ant, sigma_sfdB, pathloss_m, R, 2/3);
-sprintf('R * 2/3 distribution simulation done')
 
-power_cap_results_dist_no_intercell_on_edge = dist_MIMO_no_intercell(uplink_pow_axis, K_users, ...
+power_cap_results_dist_no_intercell_on edge = dist_MIMO_no_intercell(uplink_pow_axis, K_users, ...
     n_sigma, BS_ant, sigma_sfdB, pathloss_m, R, 1);
-sprintf('R distribution simulation done')
-
 
 figure(2)
 clf
@@ -61,22 +53,18 @@ hold on
 p3 = plot(SNR_axis_dB,power_cap_results_no_dist);
 p3.LineWidth = 2;
 p3.LineStyle = '--'
-p4 = plot(SNR_axis_dB,power_cap_results_dist_no_intercell_one_third);
+p4 = plot(SNR_axis_dB,power_cap_results_dist_no_intercell);
 p4.LineWidth = 2;
 p4.LineStyle = '-.'
-p5 = plot(SNR_axis_dB,power_cap_results_dist_no_intercell_mid);
+p5 = plot(SNR_axis_dB,power_cap_results_dist_no_intercell);
 p5.LineWidth = 2;
 p5.LineStyle = '-.'
-p6 = plot(SNR_axis_dB,power_cap_results_dist_no_intercell_on_edge);
-p6.LineWidth = 2;
-p6.LineStyle = '-.'
 hold off
 grid on
 xlabel('SNR (dB)')
 ylabel('Sum Rate (bits/s/Hz)')
 %ylim([0 35])
-lgnd = legend('No dist_{uplink}', '0.333R away dist_{uplink}', ...
-     '0.666R away dist_{uplink}', 'R away dist_{uplink}')
+lgnd = legend('No dist_{uplink}', 'Has dist_{uplink}')
 lgnd.Location = 'NorthWest';
 
 
@@ -186,7 +174,7 @@ end
 function power_cap_results_zf = dist_MIMO_no_intercell(uplink_pow_axis, K_users, ...
     n_sigma, BS_ant, sigma_sfdB, pathloss_m, R, dist_from_centre)
 
-    user_test_count = 500;
+    user_test_count = 1000;
     channel_rnd_count = 100;
 
     power_cap_results_zf = zeros(length(uplink_pow_axis),1);
@@ -196,6 +184,7 @@ function power_cap_results_zf = dist_MIMO_no_intercell(uplink_pow_axis, K_users,
     ant_bearing(BS_ant+1) = []; %so we don't have two antenna together
     
     ant_magnitude_dist = dist_from_centre*R;
+
     ant_pos = ant_magnitude_dist.* exp(1i*ant_bearing);
    
     
@@ -211,6 +200,8 @@ function power_cap_results_zf = dist_MIMO_no_intercell(uplink_pow_axis, K_users,
             magnitude = sqrt(abs(rand(K_users,1)*R^2));
             bearing = 2*pi*(rand(K_users,1));
             pos = magnitude .* exp(1i*bearing);    
+
+
             %----------------
             %{
             figure(1)
@@ -224,37 +215,53 @@ function power_cap_results_zf = dist_MIMO_no_intercell(uplink_pow_axis, K_users,
             grid on  
          %}
             %-------------------
+
             R_results_zf = zeros(channel_rnd_count,1);  
+
+
+
             % for each rnd channel
             for channel_test_num = 1:channel_rnd_count
-               %beta = ones(K_users,1);
+
+
+
+
+                %beta = ones(K_users,1);
 
                 H_rayleigh = (  sqrt(1/(2))* ...
                     (   randn(BS_ant,K_users) + 1j*randn(BS_ant,K_users) )    );
+
                 R_sum_zf = 0;    
+
                 % for each user in rnd uplink chan
                 for user_per_chan = 1:K_users
                     
                     dist_from_ant = abs(pos(user_per_chan) - ant_pos);
                     
+                    % assume equal power allocation to BS ant.
                     
                     % shadowing assumed to be independent due to dist
                     % between antennae - we get gain from this
                     L = db2pow(sigma_sfdB * randn(BS_ant,1));   
                     
                     
-                    %L = db2pow(sigma_sfdB * randn(1,1));
-                    
-                    
                     beta_k = (dist_from_ant'.^(-pathloss_m)) .* L;
 
+                                        
+                    
+                    
+                    
+
+
                     %---------- ZF compute SINR
+
                     known_interfere_term_zf = inv(H_rayleigh'*H_rayleigh);
                     
-                    % normalised power dist (assume equal power allocation)
+                    % normalised power dist
                     SINR_zf_kth = sum(uplink_power * beta_k) /...
                         (BS_ant * n_sigma^2 * known_interfere_term_zf(user_per_chan,user_per_chan));
-                    
+
+
                     R_k_zf = log2(1 + SINR_zf_kth);
                     R_sum_zf = R_sum_zf + R_k_zf;                    
 

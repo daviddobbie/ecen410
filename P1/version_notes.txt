@@ -2,4 +2,4 @@ v01 - Only Rayleigh fading, no shadowing, no path loss, one bast station - only 
 
 v02 - Has pathloss, shadowing, and Rayleigh fading. No intercell interference being dealt with. We see increased performance from independent shadowing assumed by antennae being separated.
 
-v03
+v03 - has pl, shadow, rayleigh fading. no intercell interference. Has distributed MIMO with respect to a radius around the centre (no rx in the centre of the circle). Equal power allocation towards each antenna. 
