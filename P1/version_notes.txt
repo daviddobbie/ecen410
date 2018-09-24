@@ -1,0 +1,5 @@
+v01 - Only Rayleigh fading, no shadowing, no path loss, one bast station - only UE interference.
+
+v02 - Has pathloss, shadowing, and Rayleigh fading. No intercell interference being dealt with. We see increased performance from independent shadowing assumed by antennae being separated.
+
+v03

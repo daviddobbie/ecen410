@@ -13,7 +13,7 @@ set(0,'defaultTextInterpreter','latex');
 
 R = 1000;
 pathloss_m = 3;
-sigma_sfdB =1; %the fading
+sigma_sfdB =0; %the shadowing
 macro_userDens = 10;
 
 
@@ -48,6 +48,11 @@ uplink_pow_axis = logspace(-2,2,10);
 user_test_count = 100;
 channel_rnd_count = 100;
 
+
+
+% This simulation holds pathloss constant and deals with only
+% fading. This holds as the BS antennas are all in one location. This does
+% not model inter-cell interference.
 
 
 
@@ -102,7 +107,7 @@ for uplink_power_indx = 1:length(uplink_pow_axis)
             beta = (magnitude.^(-pathloss_m));
             beta = ones(K_users,1);
             
-            H_rayleigh = (  sqrt(1/(2))* ...
+            H_rayleigh = (  db2pow(sigma_sfdB)  *sqrt(1/(2))* ...
                 (   randn(BS_ant,K_users) + 1j*randn(BS_ant,K_users) )    );
             
             R_sum_mrc = 0;

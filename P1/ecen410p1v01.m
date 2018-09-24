@@ -13,7 +13,7 @@ set(0,'defaultTextInterpreter','latex');
 
 R = 1000;
 pathloss_m = 3;
-sigma_sfdB =1; %the fading
+sigma_sfdB =0; %the shadowing
 macro_userDens = 10;
 
 
@@ -48,6 +48,11 @@ uplink_pow_axis = logspace(-2,2,10);
 user_test_count = 100;
 channel_rnd_count = 100;
 
+
+
+% This simulation holds pathloss constant and deals with only
+% fading. This holds as the BS antennas are all in one location. This does
+% not model inter-cell interference.
 
 
 
@@ -102,7 +107,7 @@ for uplink_power_indx = 1:length(uplink_pow_axis)
             beta = (magnitude.^(-pathloss_m));
             beta = ones(K_users,1);
             
-            H_rayleigh = (  sqrt(1/(2))* ...
+            H_rayleigh = (  db2pow(sigma_sfdB)  *sqrt(1/(2))* ...
                 (   randn(BS_ant,K_users) + 1j*randn(BS_ant,K_users) )    );
             
             R_sum_mrc = 0;
@@ -157,7 +162,9 @@ for uplink_power_indx = 1:length(uplink_pow_axis)
                 
                 %---------- ZF compute SINR
                 
-                SINR_zf_kth = uplink_power * beta_k / sig
+                interfere_term_zf = inv(H_rayleigh'*H_rayleigh);
+                SINR_zf_kth = uplink_power * beta_k /...
+                    (n_sigma^2 * interfere_term_zf(user_per_chan,user_per_chan));
                 
                 
                 R_k_zf = log2(1 + SINR_zf_kth);
@@ -170,22 +177,24 @@ for uplink_power_indx = 1:length(uplink_pow_axis)
             end
             R_results_mrc(channel_test_num) = R_sum_mrc;
             R_results_mmse(channel_test_num) = R_sum_mmse;           
-        
+            R_results_zf(channel_test_num) = R_sum_zf;             
         end
         
         R_sum_mean_mrc = mean(R_results_mrc);
-        R_user_results_mrc(user_test_num) = R_sum_mean_mrc;
-        
+        R_user_results_mrc(user_test_num) = R_sum_mean_mrc;     
         
         R_sum_mean_mmse = mean(R_results_mmse);
-        R_user_results_mmse(user_test_num) = R_sum_mean_mmse;        
+        R_user_results_mmse(user_test_num) = R_sum_mean_mmse;      
         
+        
+        R_sum_mean_zf = mean(R_results_zf);
+        R_user_results_zf(user_test_num) = R_sum_mean_zf;         
         
     end
     
     power_cap_results_mrc(uplink_power_indx) = mean(R_user_results_mrc);
     power_cap_results_mmse(uplink_power_indx) = mean(R_user_results_mmse);    
-    
+    power_cap_results_zf(uplink_power_indx) = mean(R_user_results_zf);    
     
 end
 
@@ -198,8 +207,12 @@ clf
 hold on
 p1 = plot(pow2db(uplink_pow_axis),power_cap_results_mrc);
 p1.LineWidth = 2;
+p1.LineStyle = '-.'
 p2 = plot(pow2db(uplink_pow_axis),power_cap_results_mmse);
 p2.LineWidth = 2;
+p3 = plot(pow2db(uplink_pow_axis),power_cap_results_zf);
+p3.LineWidth = 2;
+p3.LineStyle = '--'
 hold off
 grid on
 xlabel('SNR (dB)')
