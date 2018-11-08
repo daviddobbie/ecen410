@@ -2,4 +2,8 @@ v01 - Only Rayleigh fading, no shadowing, no path loss, one base station - only 
 
 v02 - Has pathloss, shadowing, and Rayleigh fading. No intercell interference being dealt with. We see increased performance from independent shadowing assumed by antennae being separated.
 
-v03 - has pl, shadow, rayleigh fading. no intercell interference. Has distributed MIMO with respect to a radius around the centre (no rx in the centre of the circle). Equal power allocation towards each antenna. We consider uplink conenction.
+v03 - has pl, shadow, rayleigh fading. no intercell interference. Has distributed MIMO with respect to a radius around the centre (no rx in the centre of the circle). Equal power allocation towards each antenna. Fixed reayeligh so it has unit variance. We consider uplink conenction.
+
+v04 - deal with intercell interference, only problem is that it excludes postcoding for computing the SINR of the uplink. There may be additional capacity gain if there is some near inversion by the postcoding.
+
+v05 - have intercell interference with the inclusion of Rayleigh channel inversion post-coding.
