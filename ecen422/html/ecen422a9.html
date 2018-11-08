@@ -1,0 +1,727 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ecen422a9</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-04"><meta name="DC.source" content="ecen422a9.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">ECEN 422 - A9</a></li><li><a href="#2">Q1 a</a></li><li><a href="#4">Q1 b</a></li><li><a href="#5">Q2</a></li><li><a href="#6">Q3) a)</a></li><li><a href="#7">Q3) b)</a></li></ul></div><h2 id="1">ECEN 422 - A9</h2><p>David Dobbie</p><pre class="codeinput">clc
+clear
+</pre><h2 id="2">Q1 a</h2><p>simple_portfolio_data</p><pre class="codeinput">rand(<span class="string">'state'</span>, 5);
+randn(<span class="string">'state'</span>, 5);
+n=20;
+pbar = ones(n,1)*.03+[rand(n-1,1); 0]*.12;
+S = randn(n,n);
+S = S'*S;
+S = S/max(abs(diag(S)))*.2;
+S(:,n) = zeros(n,1);
+S(n,:) = zeros(n,1)';
+x_unif = ones(n,1)/n;
+
+
+A = randn(n);
+
+
+<span class="comment">% cvx_begin sdp</span>
+<span class="comment">%     variable P(n,n) symmetric</span>
+<span class="comment">%     minimize(trace(P))</span>
+<span class="comment">%     A'*P + P*A &lt;= -eye(n)</span>
+<span class="comment">%     P &gt;= eye(n)</span>
+<span class="comment">% cvx_end</span>
+
+<span class="comment">% -------no additional constraints</span>
+
+
+cvx_begin <span class="string">sdp</span> <span class="string">quiet</span>
+variable <span class="string">x(n,1)</span>;
+    minimize(x' * S * x); <span class="comment">% minimise risk</span>
+    sum(x) &lt;= 1; <span class="comment">% all investments must sum to 1</span>
+    -pbar'*x &lt;= -pbar'*x_unif ;<span class="comment">% bound current invest with uniform invest strat</span>
+cvx_end;
+
+disp(<span class="string">'No additional constraints'</span>)
+
+risk_uniform_invest = x_unif' * S * x_unif;
+risk_optimal_invest = x' * S * x;
+
+
+
+<span class="comment">% -------long only</span>
+
+cvx_begin <span class="string">sdp</span> <span class="string">quiet</span>
+variable <span class="string">x(n,1)</span>;
+    minimize(x' * S * x); <span class="comment">% minimise risk</span>
+    sum(x) &lt;= 1; <span class="comment">% all investments must sum to 1</span>
+    -pbar'*x &lt;= -pbar'*x_unif ;<span class="comment">% bound current invest with uniform invest strat</span>
+    x &gt;= 0 <span class="comment">% long only</span>
+cvx_end;
+
+disp([<span class="string">'Long only'</span>])
+
+risk_uniform_invest = x_unif' * S * x_unif;
+risk_optimal_long_only_invest = x' * S * x;
+
+
+
+
+<span class="comment">% ------ limit on total short position</span>
+
+cvx_begin <span class="string">sdp</span> <span class="string">quiet</span>
+variable <span class="string">x(n,1)</span>;
+    minimize(x' * S * x); <span class="comment">% minimise risk</span>
+    sum(x) &lt;= 1; <span class="comment">% all investments must sum to 1</span>
+    -pbar'*x &lt;= -pbar'*x_unif ;<span class="comment">% bound current invest with uniform invest strat</span>
+    sum(max(-x,0)) &lt;= 0.5 <span class="comment">% limit short to up to half of investment</span>
+cvx_end;
+sum(max(-x,0));
+disp([<span class="string">'Limit Short to half of investment'</span>])
+
+risk_uniform_invest = x_unif' * S * x_unif;
+risk_optimal_limit_short_invest = x' * S * x;
+
+risk_variance= [risk_uniform_invest; risk_optimal_invest; <span class="keyword">...</span>
+    risk_optimal_long_only_invest; risk_optimal_limit_short_invest];
+rows = {<span class="string">'Uniform Investment'</span>, <span class="string">'Unconstrained Investment'</span>,<span class="keyword">...</span>
+    <span class="string">'Long-only investment'</span>, <span class="string">'Short-limited investment'</span>};
+
+
+table(risk_variance, <span class="string">'RowNames'</span>, rows)
+</pre><pre class="codeoutput">No additional constraints
+Long only
+Limit Short to half of investment
+
+ans =
+
+  4&times;1 table
+
+                                risk_variance
+                                _____________
+
+    Uniform Investment           0.0075753   
+    Unconstrained Investment    0.00034623   
+    Long-only investment         0.0025663   
+    Short-limited investment    0.00044078   
+
+</pre><p>We see that the no constraints of investment type achieves the lowest risk. Long-only has the highest risk, and short limit has a compromise between the two. All of these results are still better than a uniform investment however even though the return is the constant.</p><h2 id="4">Q1 b</h2><pre class="codeinput">rand(<span class="string">'state'</span>, 5);
+randn(<span class="string">'state'</span>, 5);
+n=20;
+pbar = ones(n,1)*.03+[rand(n-1,1); 0]*.12;
+S = randn(n,n);
+S = S'*S;
+S = S/max(abs(diag(S)))*.2;
+S(:,n) = zeros(n,1);
+S(n,:) = zeros(n,1)';
+x_unif = ones(n,1)/n;
+
+length_res = 20;
+var_limit_half_short = linspace(0,0.20^2,length_res);
+mean_return_half_short = zeros(1,length_res);
+var_limit_long_only = linspace(0,0.20^2,length_res);
+mean_return_long_only = zeros(1,length_res);
+
+
+
+<span class="comment">% calculate wrt to a set variance</span>
+<span class="keyword">for</span> indx = 1:length_res
+    cvx_begin <span class="string">sdp</span> <span class="string">quiet</span>
+    variable <span class="string">x(n,1)</span>;
+        minimize(-pbar'*x); <span class="comment">% minimise risk</span>
+        sum(x) &lt;= 1; <span class="comment">% all investments must sum to 1</span>
+        x' * S * x &lt;= var_limit_half_short(indx)
+        sum(max(-x,0)) &lt;= 0.5 <span class="comment">% limit short to up to half of investment</span>
+    cvx_end;
+    mean_return_half_short(indx) = pbar'*x;
+
+    cvx_begin <span class="string">sdp</span> <span class="string">quiet</span>
+    variable <span class="string">x(n,1)</span>;
+        minimize(-pbar'*x); <span class="comment">% minimise risk</span>
+        sum(x) &lt;= 1; <span class="comment">% all investments must sum to 1</span>
+        x' * S * x &lt;= var_limit_long_only(indx)
+        x &gt;= 0 <span class="comment">% long only</span>
+    cvx_end;
+    mean_return_long_only(indx) = pbar'*x;
+
+<span class="keyword">end</span>
+
+
+
+std_dev_limit_half_short = sqrt(var_limit_half_short);
+std_dev_limit_long_only = sqrt(var_limit_long_only);
+
+figure(1)
+clf
+xlabel(<span class="string">'standard deviation of return'</span>)
+ylabel(<span class="string">'mean return'</span>)
+hold <span class="string">on</span>
+plot(std_dev_limit_half_short, mean_return_half_short)
+plot(std_dev_limit_long_only, mean_return_long_only)
+hold <span class="string">off</span>
+legend(<span class="string">'Short Limited Position'</span>,<span class="string">'Long Only'</span>,<span class="string">'Location'</span>,<span class="string">"SouthEast"</span>)
+</pre><img vspace="5" hspace="5" src="ecen422a9_01.png" alt=""> <h2 id="5">Q2</h2><pre class="codeinput">clear
+
+A = [-1 0.4 0.8; 1 0 0; 0 1 0];
+b = [1;0;0.3];
+x_des = [7; 2; -6];
+N = 30;
+x_init = [0;0;0];
+
+H = [];
+<span class="keyword">for</span> indx = 1:N
+    H = [H  A^(indx - 1)*b];
+<span class="keyword">end</span>
+
+
+cvx_begin <span class="string">sdp</span> <span class="string">quiet</span>
+variable <span class="string">u(N,1)</span>
+variable <span class="string">t(N,1)</span>
+variable <span class="string">y(N,1)</span>
+    minimise(sum(t))
+    <span class="comment">%get with 1e-6 of target</span>
+    H*u &lt;= x_des + 1e-6
+    H*u &gt;= x_des - 1e-6
+    <span class="comment">% input is element wise in absolute value by y</span>
+    -y &lt;= u
+    u &lt;= y
+    <span class="comment">% relating cost of step to fuel function that we are minimising</span>
+    t &gt;= y
+    t &gt;= 2*y -1
+cvx_end;
+
+H*u
+
+x_out = zeros(3,N);
+x_out(:,1) = x_init;
+<span class="keyword">for</span> indx = 2:N
+    x_out(:,indx) =   H(:,1:indx)*u(1:indx);
+<span class="keyword">end</span>
+
+
+
+figure(2)
+clf
+
+subplot(4,1,1)
+stairs(u)
+ylabel(<span class="string">'u(t)'</span>)
+ylim([-4 4])
+
+subplot(4,1,2)
+hold <span class="string">on</span>
+stairs(x_out(1,:)')
+plot([0 N],[x_des(1) x_des(1)], <span class="string">'--'</span>)
+ylabel(<span class="string">'x_1(t)'</span>)
+ylim([-8 8])
+hold <span class="string">off</span>
+
+subplot(4,1,3)
+hold <span class="string">on</span>
+stairs(x_out(2,:)')
+plot([0 N],[x_des(2) x_des(2)], <span class="string">'--'</span>)
+ylabel(<span class="string">'x_2(t)'</span>)
+ylim([-8 8])
+hold <span class="string">off</span>
+
+subplot(4,1,4)
+hold <span class="string">on</span>
+stairs(x_out(3,:)')
+plot([0 N],[x_des(3) x_des(3)], <span class="string">'--'</span>)
+ylabel(<span class="string">'x_3(t)'</span>)
+ylim([-8 8])
+hold <span class="string">off</span>
+
+xlabel(<span class="string">'time'</span>)
+</pre><pre class="codeoutput">
+ans =
+
+    7.0000
+    2.0000
+   -6.0000
+
+</pre><img vspace="5" hspace="5" src="ecen422a9_02.png" alt=""> <h2 id="6">Q3) a)</h2><pre class="codeinput">u1 = -2;
+u2 = -3;
+
+cvx_begin <span class="string">quiet</span>
+variable <span class="string">x1</span>
+variable <span class="string">x2</span>
+dual <span class="string">variable</span> <span class="string">y1</span>
+dual <span class="string">variable</span> <span class="string">y2</span>
+dual <span class="string">variable</span> <span class="string">y3</span>
+    <span class="comment">% equivalnet to min x1*x1 + 2*x2*x2 - x1*x2 - x1</span>
+    minimise( 0.5*quad_form(x1,1) + 1.5*quad_form(x2,1) + 0.5*quad_form(x1-x2,1) +   -x1 )
+    y1 : x1 + 2*x2 &lt;= u1
+    y2 : x1 - 4*x2 &lt;= u2
+    y3 : 5*x1 + 76*x2 &lt;= 1
+cvx_end;
+
+<span class="comment">% optimal variables</span>
+y1;
+y2;
+y3;
+x1;
+x2;
+
+<span class="comment">% check KKT - if true they hold</span>
+<span class="comment">% primal</span>
+primal1 = x1 + 2*x2 &lt;= u1;
+primal2 = x1 - 4*x2 &lt;= u2;
+primal3 = 5*x1 + 76*x2 &lt;= 1;
+<span class="comment">% dual</span>
+dual1 = y1 &gt;= 0;
+dual2 = y2 &gt;= 0;
+dual3 = y3 &gt;= 0;
+<span class="comment">% complementary slackness</span>
+slack1 = abs(y1*(x1 + 2*x2 - u1) &lt;= 1e-3);
+slack2 = abs(y2*(x1 - 4*x2 - u2) &lt;= 1e-3);
+slack3 = abs(y3*(5*x1 + 76*x2 - 1) &lt;= 1e-3);
+<span class="comment">% Lagrangian gradient is 0</span>
+lagan_x1 = abs(2*x1 - x2 - 1 + y1 + y2 + 5*y3) &lt;= 1e-3;
+lagan_x2 = abs(4*x2 - x1 + 2*y1 - 4*y2 + 76*y3) &lt;= 1e-3;
+
+<span class="comment">% KKT conditions hold if all of these inequalities are true</span>
+KKT_cond_satisfied = (primal1 &amp; primal2 &amp; primal3 &amp; dual1 &amp; dual2 &amp; dual3 <span class="keyword">...</span>
+    &amp; slack1 &amp; slack2 &amp; slack3 &amp; lagan_x1 &amp; lagan_x2)
+</pre><pre class="codeoutput">
+KKT_cond_satisfied =
+
+  logical
+
+   1
+
+</pre><h2 id="7">Q3) b)</h2><pre class="codeinput">del = [0, 0;
+        0, -0.1;
+        0, 0.1;
+        -0.1, 0;
+        -0.1, -0.1;
+        -0.1, 0.1;
+        0.1, 0;
+        0.1, -0.1;
+        0.1, 0.1];
+
+res = zeros(9,1);
+
+<span class="keyword">for</span> indx = 1:9
+
+    u1 = -2 + del(indx,1);
+    u2 = -3 + del(indx,2);
+
+    cvx_begin <span class="string">quiet</span>
+    variable <span class="string">x1</span>
+    variable <span class="string">x2</span>
+    dual <span class="string">variable</span> <span class="string">y1</span>
+    dual <span class="string">variable</span> <span class="string">y2</span>
+    dual <span class="string">variable</span> <span class="string">y3</span>
+        <span class="comment">% equivalnet to min x1*x1 + 2*x2*x2 - x1*x2 - x1</span>
+        minimise( 0.5*quad_form(x1,1) + 1.5*quad_form(x2,1) + 0.5*quad_form(x1-x2,1) +   -x1 )
+        y1 : x1 + 2*x2 &lt;= u1
+        y2 : x1 - 4*x2 &lt;= u2
+        y3 : 5*x1 + 76*x2 &lt;= 1
+    cvx_end;
+    p_exact = 0.5*quad_form(x1,1) + 1.5*quad_form(x2,1) + 0.5*quad_form(x1-x2,1) +   -x1;
+    res(indx) = p_exact;
+<span class="keyword">end</span>
+var_name = {<span class="string">'del_1'</span>, <span class="string">'del_2'</span>, <span class="string">'p_opt_exact'</span>, <span class="string">'clean_less_than_perturbed'</span>};
+table(del(:,1), del(:,2), res,  res&lt;=res(1),<span class="string">'VariableNames'</span>,var_name)
+</pre><pre class="codeoutput">
+ans =
+
+  9&times;4 table
+
+    del_1    del_2    p_opt_exact    clean_less_than_perturbed
+    _____    _____    ___________    _________________________
+
+       0        0     8.2222         true                     
+       0     -0.1     8.7064         false                    
+       0      0.1       7.98         true                     
+    -0.1        0      8.565         false                    
+    -0.1     -0.1     8.8156         false                    
+    -0.1      0.1     8.3189         false                    
+     0.1        0     8.2222         false                    
+     0.1     -0.1     8.7064         false                    
+     0.1      0.1     7.7515         true                     
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% ECEN 422 - A9
+% David Dobbie
+
+clc
+clear
+
+%% Q1 a
+% simple_portfolio_data
+rand('state', 5);
+randn('state', 5);
+n=20;
+pbar = ones(n,1)*.03+[rand(n-1,1); 0]*.12;
+S = randn(n,n);
+S = S'*S;
+S = S/max(abs(diag(S)))*.2;
+S(:,n) = zeros(n,1);
+S(n,:) = zeros(n,1)';
+x_unif = ones(n,1)/n;
+
+
+A = randn(n);
+
+
+% cvx_begin sdp
+%     variable P(n,n) symmetric
+%     minimize(trace(P))
+%     A'*P + P*A <= -eye(n)
+%     P >= eye(n)
+% cvx_end
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-no additional constraints
+
+
+cvx_begin sdp quiet
+variable x(n,1);
+    minimize(x' * S * x); % minimise risk
+    sum(x) <= 1; % all investments must sum to 1
+    -pbar'*x <= -pbar'*x_unif ;% bound current invest with uniform invest strat
+cvx_end;
+
+disp('No additional constraints')
+
+risk_uniform_invest = x_unif' * S * x_unif;
+risk_optimal_invest = x' * S * x;
+
+
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-long only
+
+cvx_begin sdp quiet
+variable x(n,1);
+    minimize(x' * S * x); % minimise risk
+    sum(x) <= 1; % all investments must sum to 1
+    -pbar'*x <= -pbar'*x_unif ;% bound current invest with uniform invest strat
+    x >= 0 % long only
+cvx_end;
+
+disp(['Long only'])
+
+risk_uniform_invest = x_unif' * S * x_unif;
+risk_optimal_long_only_invest = x' * S * x;
+
+
+
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH limit on total short position
+
+cvx_begin sdp quiet
+variable x(n,1);
+    minimize(x' * S * x); % minimise risk
+    sum(x) <= 1; % all investments must sum to 1
+    -pbar'*x <= -pbar'*x_unif ;% bound current invest with uniform invest strat
+    sum(max(-x,0)) <= 0.5 % limit short to up to half of investment
+cvx_end;
+sum(max(-x,0));
+disp(['Limit Short to half of investment'])
+
+risk_uniform_invest = x_unif' * S * x_unif;
+risk_optimal_limit_short_invest = x' * S * x;
+
+risk_variance= [risk_uniform_invest; risk_optimal_invest; ...
+    risk_optimal_long_only_invest; risk_optimal_limit_short_invest];
+rows = {'Uniform Investment', 'Unconstrained Investment',...
+    'Long-only investment', 'Short-limited investment'};
+
+
+table(risk_variance, 'RowNames', rows)
+
+
+%%
+% We see that the no constraints of investment type achieves the lowest
+% risk. Long-only has the highest risk, and short limit has a compromise
+% between the two. All of these results are still better than a uniform
+% investment however even though the return is the constant.
+
+%% Q1 b
+
+
+
+rand('state', 5);
+randn('state', 5);
+n=20;
+pbar = ones(n,1)*.03+[rand(n-1,1); 0]*.12;
+S = randn(n,n);
+S = S'*S;
+S = S/max(abs(diag(S)))*.2;
+S(:,n) = zeros(n,1);
+S(n,:) = zeros(n,1)';
+x_unif = ones(n,1)/n;
+
+length_res = 20;
+var_limit_half_short = linspace(0,0.20^2,length_res);
+mean_return_half_short = zeros(1,length_res);
+var_limit_long_only = linspace(0,0.20^2,length_res);
+mean_return_long_only = zeros(1,length_res);
+
+
+
+% calculate wrt to a set variance
+for indx = 1:length_res
+    cvx_begin sdp quiet
+    variable x(n,1);
+        minimize(-pbar'*x); % minimise risk
+        sum(x) <= 1; % all investments must sum to 1
+        x' * S * x <= var_limit_half_short(indx)
+        sum(max(-x,0)) <= 0.5 % limit short to up to half of investment
+    cvx_end;
+    mean_return_half_short(indx) = pbar'*x;    
+    
+    cvx_begin sdp quiet
+    variable x(n,1);
+        minimize(-pbar'*x); % minimise risk
+        sum(x) <= 1; % all investments must sum to 1
+        x' * S * x <= var_limit_long_only(indx)
+        x >= 0 % long only
+    cvx_end;
+    mean_return_long_only(indx) = pbar'*x;
+    
+end
+
+
+
+std_dev_limit_half_short = sqrt(var_limit_half_short);
+std_dev_limit_long_only = sqrt(var_limit_long_only);
+
+figure(1)
+clf
+xlabel('standard deviation of return')
+ylabel('mean return')
+hold on
+plot(std_dev_limit_half_short, mean_return_half_short)
+plot(std_dev_limit_long_only, mean_return_long_only)
+hold off
+legend('Short Limited Position','Long Only','Location',"SouthEast")
+
+
+
+%% Q2
+clear
+
+A = [-1 0.4 0.8; 1 0 0; 0 1 0];
+b = [1;0;0.3];
+x_des = [7; 2; -6];
+N = 30;
+x_init = [0;0;0];
+
+H = [];
+for indx = 1:N
+    H = [H  A^(indx - 1)*b];
+end
+
+
+cvx_begin sdp quiet
+variable u(N,1)
+variable t(N,1)
+variable y(N,1)
+    minimise(sum(t))
+    %get with 1e-6 of target    
+    H*u <= x_des + 1e-6
+    H*u >= x_des - 1e-6 
+    % input is element wise in absolute value by y
+    -y <= u
+    u <= y
+    % relating cost of step to fuel function that we are minimising
+    t >= y
+    t >= 2*y -1 
+cvx_end;
+
+H*u
+
+x_out = zeros(3,N);
+x_out(:,1) = x_init;
+for indx = 2:N
+    x_out(:,indx) =   H(:,1:indx)*u(1:indx);
+end
+
+
+
+figure(2)
+clf
+
+subplot(4,1,1)
+stairs(u)
+ylabel('u(t)')
+ylim([-4 4])
+
+subplot(4,1,2)
+hold on
+stairs(x_out(1,:)')
+plot([0 N],[x_des(1) x_des(1)], 'REPLACE_WITH_DASH_DASH')
+ylabel('x_1(t)')
+ylim([-8 8])
+hold off
+
+subplot(4,1,3)
+hold on
+stairs(x_out(2,:)')
+plot([0 N],[x_des(2) x_des(2)], 'REPLACE_WITH_DASH_DASH')
+ylabel('x_2(t)')
+ylim([-8 8])
+hold off
+
+subplot(4,1,4)
+hold on
+stairs(x_out(3,:)')
+plot([0 N],[x_des(3) x_des(3)], 'REPLACE_WITH_DASH_DASH')
+ylabel('x_3(t)')
+ylim([-8 8])
+hold off
+
+xlabel('time')
+
+
+%% Q3) a)
+
+u1 = -2;
+u2 = -3;
+
+cvx_begin quiet
+variable x1
+variable x2
+dual variable y1
+dual variable y2
+dual variable y3
+    % equivalnet to min x1*x1 + 2*x2*x2 - x1*x2 - x1
+    minimise( 0.5*quad_form(x1,1) + 1.5*quad_form(x2,1) + 0.5*quad_form(x1-x2,1) +   -x1 )
+    y1 : x1 + 2*x2 <= u1
+    y2 : x1 - 4*x2 <= u2
+    y3 : 5*x1 + 76*x2 <= 1
+cvx_end;
+
+% optimal variables
+y1;
+y2;
+y3;
+x1;
+x2;
+
+% check KKT - if true they hold
+% primal
+primal1 = x1 + 2*x2 <= u1;
+primal2 = x1 - 4*x2 <= u2;
+primal3 = 5*x1 + 76*x2 <= 1;
+% dual
+dual1 = y1 >= 0;
+dual2 = y2 >= 0;
+dual3 = y3 >= 0;
+% complementary slackness
+slack1 = abs(y1*(x1 + 2*x2 - u1) <= 1e-3);
+slack2 = abs(y2*(x1 - 4*x2 - u2) <= 1e-3);
+slack3 = abs(y3*(5*x1 + 76*x2 - 1) <= 1e-3);
+% Lagrangian gradient is 0
+lagan_x1 = abs(2*x1 - x2 - 1 + y1 + y2 + 5*y3) <= 1e-3;
+lagan_x2 = abs(4*x2 - x1 + 2*y1 - 4*y2 + 76*y3) <= 1e-3;
+
+% KKT conditions hold if all of these inequalities are true
+KKT_cond_satisfied = (primal1 & primal2 & primal3 & dual1 & dual2 & dual3 ...
+    & slack1 & slack2 & slack3 & lagan_x1 & lagan_x2)
+
+
+%% Q3) b)
+
+del = [0, 0;
+        0, -0.1;
+        0, 0.1;
+        -0.1, 0;
+        -0.1, -0.1;
+        -0.1, 0.1;
+        0.1, 0;
+        0.1, -0.1;
+        0.1, 0.1];
+
+res = zeros(9,1);
+    
+for indx = 1:9
+    
+    u1 = -2 + del(indx,1);
+    u2 = -3 + del(indx,2);
+
+    cvx_begin quiet
+    variable x1
+    variable x2
+    dual variable y1
+    dual variable y2
+    dual variable y3
+        % equivalnet to min x1*x1 + 2*x2*x2 - x1*x2 - x1
+        minimise( 0.5*quad_form(x1,1) + 1.5*quad_form(x2,1) + 0.5*quad_form(x1-x2,1) +   -x1 )
+        y1 : x1 + 2*x2 <= u1
+        y2 : x1 - 4*x2 <= u2
+        y3 : 5*x1 + 76*x2 <= 1
+    cvx_end;
+    p_exact = 0.5*quad_form(x1,1) + 1.5*quad_form(x2,1) + 0.5*quad_form(x1-x2,1) +   -x1;
+    res(indx) = p_exact;
+end
+var_name = {'del_1', 'del_2', 'p_opt_exact', 'clean_less_than_perturbed'};
+table(del(:,1), del(:,2), res,  res<=res(1),'VariableNames',var_name)
+
+
+    
+    
+
+##### SOURCE END #####
+--></body></html>
